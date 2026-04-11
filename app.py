@@ -2,12 +2,17 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from pymongo import MongoClient
-import joblib
-import numpy as np
+
+# ✅ MongoDB Connection (FINAL CORRECT)
+MONGO_URI = "mongodb+srv://paliyadev82_db_user:LjWSPw6hcKrXl03P@cluster07.t9wtd0q.mongodb.net/bone_db?retryWrites=true&w=majority"
+
+client = MongoClient(MONGO_URI)
+db = client["bone_db"]
+collection = db["predictions"]
 
 app = FastAPI()
 
-# ✅ CORS (important for React)
+# ✅ CORS (for React)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -16,62 +21,48 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# ✅ MongoDB Atlas connection
-client = MongoClient("mongodb+srv://paliyadev82_db_user:LjWSPw6hcKrXl03P@cluster07.t9wtd0q.mongodb.net/")
-db = client["bone_tumor_db"]
-collection = db["patients"]
-
-# ✅ Load model
-model = joblib.load("best_bone_tumor_model.joblib")
-
-
 # ✅ Input schema
-class InputData(BaseModel):
-    age: float
-    tumor_size_mm: float
-    bone_density: float
-    bone_texture_score: float
-    cell_irregularity: float
-    calcification_level: float
-    tumor_growth_rate: float
-    pain_score: float
-    inflammation_index: float
-    metastasis_risk: float
-    biomarker_level: float
+class PatientData(BaseModel):
+    age: int
+    tumor_size: int
+    bone_density: int
+    bone_texture: int
+    cell_irregularity: int
+    calcification: int
+    growth_rate: int
+    pain_score: int
+    inflammation: int
+    metastasis_risk: int
+    biomarker: int
 
+# ✅ Prediction logic (simple)
+def predict(data):
+    score = sum(data.values())
+    return "High Risk" if score > 50 else "Low Risk"
 
 # ✅ API route
 @app.post("/predict")
-def predict(data: InputData):
+def predict_tumor(data: PatientData):
+    try:
+        input_data = data.dict()
+        result = predict(input_data)
 
-    values = np.array([[ 
-        data.age,
-        data.tumor_size_mm,
-        data.bone_density,
-        data.bone_texture_score,
-        data.cell_irregularity,
-        data.calcification_level,
-        data.tumor_growth_rate,
-        data.pain_score,
-        data.inflammation_index,
-        data.metastasis_risk,
-        data.biomarker_level
-    ]])
+        # Save to MongoDB safely
+        try:
+            collection.insert_one({
+                "input": input_data,
+                "result": result
+            })
+        except Exception as db_error:
+            print("MongoDB Error:", db_error)
 
-    prediction = model.predict(values)[0]
-    confidence = model.predict_proba(values)[0].max()
+        return {"prediction": result}
 
-    result = "Malignant" if prediction == 1 else "Benign"
+    except Exception as e:
+        print("API Error:", e)
+        return {"error": "Something went wrong"}
 
-    # ✅ Store in MongoDB
-    record = data.dict()
-    record["prediction"] = result
-    record["confidence"] = round(confidence * 100, 2)
-
-    collection.insert_one(record)
-
-    return {
-        "prediction": result,
-        "confidence": round(confidence * 100, 2),
-        "risk": "High" if result == "Malignant" else "Low"
-    }
+# ✅ Home route
+@app.get("/")
+def home():
+    return {"message": "API is running"}

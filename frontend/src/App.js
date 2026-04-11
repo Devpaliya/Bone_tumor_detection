@@ -5,15 +5,15 @@ function App() {
   const fieldInfo = {
     age: "Age (years)",
     tumor_size_mm: "Tumor Size (mm)",
-    bone_density: "Bone Density (0 - 1)",
-    bone_texture_score: "Bone Texture Score (0 - 1)",
-    cell_irregularity: "Cell Irregularity (0 - 1)",
-    calcification_level: "Calcification Level (0 - 1)",
-    tumor_growth_rate: "Tumor Growth Rate (0 - 1)",
+    bone_density: "Bone Density (0 - 10)",
+    bone_texture_score: "Bone Texture Score (0 - 10)",
+    cell_irregularity: "Cell Irregularity (0 - 10)",
+    calcification_level: "Calcification Level (0 - 10)",
+    tumor_growth_rate: "Tumor Growth Rate (0 - 10)",
     pain_score: "Pain Score (0 - 10)",
-    inflammation_index: "Inflammation Index (0 - 1)",
-    metastasis_risk: "Metastasis Risk (0 - 1)",
-    biomarker_level: "Biomarker Level (0 - 1)"
+    inflammation_index: "Inflammation Index (0 - 10)",
+    metastasis_risk: "Metastasis Risk (0 - 10)",
+    biomarker_level: "Biomarker Level (0 - 10)"
   };
 
   const [form, setForm] = useState({
@@ -45,12 +45,15 @@ function App() {
       );
 
       const res = await axios.post(
-        "http://127.0.0.1:8000/predict",
+        "https://bone-tumor-detection-vj6v.onrender.com/predict",
         formattedData
       );
 
+      console.log("API RESPONSE:", res.data); // debug
+
       setResult(res.data);
     } catch (err) {
+      console.error(err);
       alert("Error connecting to backend");
     }
     setLoading(false);
@@ -82,6 +85,8 @@ function App() {
                 name={key}
                 value={form[key]}
                 onChange={handleChange}
+                min={key === "age" ? 0 : 0}
+                max={key === "age" ? 120 : 10}
                 className="w-full mt-1 p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
               />
             </div>
@@ -98,26 +103,32 @@ function App() {
           {loading ? "Analyzing..." : "Predict Tumor"}
         </button>
 
-        {/* RESULT */}
+        {/* RESULT DISPLAY */}
         {result && (
           <div className="mt-8 p-6 rounded-2xl shadow bg-gray-50 border text-center">
             
             <h2 className="text-2xl font-bold">
-              {result.result === "Malignant" ? "⚠️" : "✅"} Result:{" "}
+              {(result.prediction || result.result) === "Malignant" ? "⚠️" : "✅"} Result:{" "}
               <span
                 className={
-                  result.result === "Malignant"
+                  (result.prediction || result.result) === "Malignant"
                     ? "text-red-600"
                     : "text-green-600"
                 }
               >
-                {result.result}
+                {result.prediction || result.result || "No result"}
               </span>
             </h2>
 
-            <div className="mt-4 flex justify-between text-gray-700 text-lg">
-              <p>Confidence: {result.confidence}%</p>
-              <p>Risk: {result.risk}</p>
+            {/* OPTIONAL DETAILS */}
+            <div className="mt-4 text-gray-700">
+              {result.confidence && <p>Confidence: {result.confidence}%</p>}
+              {result.risk && <p>Risk: {result.risk}</p>}
+            </div>
+
+            {/* DEBUG OUTPUT */}
+            <div className="mt-4 bg-black text-green-400 p-3 rounded text-left text-sm">
+              <pre>{JSON.stringify(result, null, 2)}</pre>
             </div>
 
           </div>

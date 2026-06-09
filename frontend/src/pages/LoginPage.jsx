@@ -8,15 +8,7 @@ export default function LoginPage({ setPage }) {
   const [showPassword, setShowPassword] = useState(false);
   
 
-  const checkPassword = (password) => {
-
-  setHasLength(password.length >= 8);
-  setHasUpper(/[A-Z]/.test(password));
-  setHasLower(/[a-z]/.test(password));
-  setHasNumber(/[0-9]/.test(password));
-  setHasSpecial(/[!@#$%^&*(),.?":{}|<>]/.test(password));
-
-};
+  
   const handleLogin = async () => {
 
     if (!email || !password) {

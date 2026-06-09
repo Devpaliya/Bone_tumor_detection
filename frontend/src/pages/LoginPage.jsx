@@ -6,11 +6,7 @@ export default function LoginPage({ setPage }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [hasLength, setHasLength] = useState(false);
-  const [hasUpper, setHasUpper] = useState(false);
-  const [hasLower, setHasLower] = useState(false);
-  const [hasNumber, setHasNumber] = useState(false);
-  const [hasSpecial, setHasSpecial] = useState(false);
+  
 
   const checkPassword = (password) => {
 
@@ -112,10 +108,8 @@ export default function LoginPage({ setPage }) {
       type={showPassword ? "text" : "password"}
       placeholder="Enter Password"
       value={password}
-     onChange={(e) => {
-  setPassword(e.target.value);
-  checkPassword(e.target.value);
-}}
+     onChange={(e) => setPassword(e.target.value)}
+
       onKeyDown={(e) => {
         if (e.key === "Enter") {
           handleLogin();

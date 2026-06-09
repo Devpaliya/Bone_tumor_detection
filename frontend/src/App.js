@@ -1,66 +1,118 @@
-import React, { useState } from "react";
+import { useEffect } from "react";
+import { useState } from "react";
+import AdminLoginPage from "./pages/AdminLoginPage";
+import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import DashboardPage from "./pages/DashboardPage";
+import PredictionPage from "./pages/PredictionPage";
+import HistoryPage from "./pages/HistoryPage";
+import ResultPage from "./pages/ResultPage";
+import AdminPage from "./pages/AdminPage";
+import ProfilePage from "./pages/ProfilePage";
+import ManageDoctorsPage from "./pages/ManageDoctorsPage";
+import PatientDetailsPage from "./pages/PatientDetailsPage";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import PasswordRequestsPage from "./pages/PasswordRequestsPage";
+
+import "./print.css";
 
 function App() {
-  const [form, setForm] = useState({
-    age: "",
-    tumor_size: "",
-    bone_density: "",
-    bone_texture: "",
-    cell_irregularity: "",
-    calcification: "",
-    growth_rate: "",
-    pain_score: "",
-    inflammation: "",
-    metastasis_risk: "",
-    biomarker: ""
-  });
+  const [page, setPage] = useState(
+  localStorage.getItem("page") || "home"
+   );
 
-  const [result, setResult] = useState("");
+  const [prediction, setPrediction] = useState("");
+  const [confidence, setConfidence] = useState("");
+  const [selectedPatient, setSelectedPatient] = useState(null);
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: Number(e.target.value) });
-  };
-
-  const handleSubmit = async () => {
-    try {
-      const response = await fetch("https://bone-tumor-detection-vj6v.onrender.com/predict", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(form)
-      });
-
-      const res = await response.json();
-      setResult(res.prediction);
-    } catch (error) {
-      alert("Error connecting to backend");
-    }
-  };
+  const [previousPage, setPreviousPage] = useState("");
+  useEffect(() => {
+  localStorage.setItem("page", page);
+}, [page]);
 
   return (
-    <div style={{ textAlign: "center", padding: "20px" }}>
-      <h1>Bone Tumor Detection</h1>
+    <>
+      {page === "home" && (
+        <HomePage setPage={setPage} />
+      )}
 
-      {Object.keys(form).map((key) => (
-        <div key={key}>
-          <input
-            type="number"
-            name={key}
-            placeholder={key}
-            onChange={handleChange}
-            style={{ margin: "5px", padding: "8px" }}
-          />
-        </div>
-      ))}
+      {page === "login" && (
+        <LoginPage setPage={setPage} />
+      )}
 
-      <button onClick={handleSubmit} style={{ marginTop: "20px", padding: "10px" }}>
-        Analyze
-      </button>
+      {page === "register" && (
+        <RegisterPage setPage={setPage} />
+      )}
 
-      <h2>Result: {result}</h2>
-    </div>
+     {page === "dashboard" && (
+  <DashboardPage
+    setPage={setPage}
+    setPreviousPage={setPreviousPage}
+  />
+)}
+
+    {page === "admin" && (
+  <AdminPage
+    setPage={setPage}
+    setPreviousPage={setPreviousPage}
+  />
+)}
+
+      {page === "prediction" && (
+        <PredictionPage
+          setPage={setPage}
+          setPrediction={setPrediction}
+          setConfidence={setConfidence}
+        />
+      )}
+      {page === "forgotPassword" && (
+  <ForgotPasswordPage
+    setPage={setPage}
+  />
+)}
+{page === "passwordRequests" && (
+  <PasswordRequestsPage
+    setPage={setPage}
+  />
+)}
+      {page === "adminLogin" && (
+         <AdminLoginPage setPage={setPage} />
+       )} 
+
+      {page === "result" && (
+        <ResultPage
+          prediction={prediction}
+          confidence={confidence}
+          setPage={setPage}
+        />
+      )}
+
+   {page === "history" && (
+  <HistoryPage
+    setPage={setPage}
+    previousPage={previousPage}
+    setSelectedPatient={setSelectedPatient}
+  />
+)}
+
+      {page === "profile" && (
+        <ProfilePage setPage={setPage} />
+      )}
+
+      {page === "manageDoctors" && (
+        <ManageDoctorsPage setPage={setPage} />
+      )}
+
+     {page === "patientDetails" && (
+  <PatientDetailsPage
+    patient={selectedPatient}
+    setPage={setPage}
+  />
+)}
+    </>
   );
 }
 
 export default App;
+

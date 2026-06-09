@@ -1,0 +1,39 @@
+@media print {
+
+  body {
+    zoom: 55%;
+  }
+
+  button {
+    display: none !important;
+  }
+
+  .min-h-screen {
+    min-height: auto !important;
+  }
+
+  .p-8 {
+    padding: 12px !important;
+  }
+
+  .mt-8,
+  .mt-10 {
+    margin-top: 10px !important;
+  }
+
+  h1 {
+    font-size: 32px !important;
+  }
+
+  h2 {
+    font-size: 22px !important;
+  }
+
+  h3 {
+    font-size: 18px !important;
+  }
+
+  * {
+    page-break-inside: avoid !important;
+  }
+}

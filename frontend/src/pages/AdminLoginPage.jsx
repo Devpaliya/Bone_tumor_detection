@@ -6,21 +6,8 @@ export default function AdminLoginPage({ setPage }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [hasLength, setHasLength] = useState(false);
-  const [hasUpper, setHasUpper] = useState(false);
-  const [hasLower, setHasLower] = useState(false);
-  const [hasNumber, setHasNumber] = useState(false);
-  const [hasSpecial, setHasSpecial] = useState(false);
   
-  const checkPassword = (password) => {
-
-  setHasLength(password.length >= 8);
-  setHasUpper(/[A-Z]/.test(password));
-  setHasLower(/[a-z]/.test(password));
-  setHasNumber(/[0-9]/.test(password));
-  setHasSpecial(/[!@#$%^&*(),.?":{}|<>]/.test(password));
-
-};
+  
 
   const handleLogin = () => {
 
@@ -68,10 +55,8 @@ export default function AdminLoginPage({ setPage }) {
     type={showPassword ? "text" : "password"}
     placeholder="Password"
     value={password}
-    onChange={(e) => {
-  setPassword(e.target.value);
-  checkPassword(e.target.value);
-}}
+    onChange={(e) => setPassword(e.target.value)}
+
     className="w-full bg-slate-800 text-white p-4 rounded-xl"
   />
 

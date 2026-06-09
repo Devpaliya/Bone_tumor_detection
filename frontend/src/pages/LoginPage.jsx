@@ -19,7 +19,7 @@ export default function LoginPage({ setPage }) {
     try {
 
       const response = await fetch(
-        "http://127.0.0.1:8000/login",
+        "https://bone-tumor-detection-1.onrender.com/login",
         {
           method: "POST",
           headers: {

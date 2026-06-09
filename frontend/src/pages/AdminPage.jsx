@@ -15,23 +15,23 @@ export default function AdminPage({ setPage, setPreviousPage }) {
   const [doctorAnalytics, setDoctorAnalytics] = useState([]);
   const [passwordCount, setPasswordCount] = useState(0);
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/admin/stats")
+    fetch("https://bone-tumor-detection-1.onrender.com/admin/stats")
       .then((res) => res.json())
       .then((data) => setStats((prev) => ({ ...prev, ...data })))
       .catch((err) => console.error("Error fetching stats:", err));
 
-    fetch("http://127.0.0.1:8000/admin/recent-predictions")
+    fetch("https://bone-tumor-detection-1.onrender.com/admin/recent-predictions")
       .then((res) => res.json())
       .then((data) => setRecentPredictions(Array.isArray(data) ? data : []))
       .catch((err) => console.error("Error fetching predictions:", err));
       fetch(
-  "http://127.0.0.1:8000/admin/doctor-analytics"
+  "https://bone-tumor-detection-1.onrender.com/admin/doctor-analytics"
 )
   .then((res) => res.json())
   .then((data) => setDoctorAnalytics(data))
   .catch((err) => console.log(err));
-  
-  fetch("http://127.0.0.1:8000/admin/password-request-count")
+
+  fetch("https://bone-tumor-detection-1.onrender.com/admin/password-request-count")
   .then((res) => res.json())
   .then((data) => setPasswordCount(data.count))
   .catch((err) => console.log(err));

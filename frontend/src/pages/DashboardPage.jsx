@@ -23,13 +23,13 @@ useEffect(() => {
   if (!doctor.email) return;
 
   fetch(
-    `http://127.0.0.1:8000/doctor/stats/${doctor.email}`
+    `https://bone-tumor-detection-1.onrender.com/doctor/stats/${doctor.email}`
   )
     .then(res => res.json())
     .then(data => setStats(data));
 
   fetch(
-    `http://127.0.0.1:8000/doctor/recent/${doctor.email}`
+    `https://bone-tumor-detection-1.onrender.com/doctor/recent/${doctor.email}`
   )
     .then(res => res.json())
     .then(data => setRecentPatients(data));

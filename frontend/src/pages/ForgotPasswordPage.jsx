@@ -33,7 +33,7 @@ export default function ForgotPasswordPage({ setPage }) {
     }
 
     const response = await fetch(
-      "http://127.0.0.1:8000/request-password-reset",
+      "https://bone-tumor-detection-1.onrender.com/request-password-reset",
       {
         method: "POST",
         headers: {
@@ -57,7 +57,7 @@ export default function ForgotPasswordPage({ setPage }) {
   }
 
   const response = await fetch(
-    `http://127.0.0.1:8000/password-reset-status/${email}`
+    `https://bone-tumor-detection-1.onrender.com/password-reset-status/${email}`
   );
 
   const data = await response.json();
@@ -78,7 +78,7 @@ export default function ForgotPasswordPage({ setPage }) {
     }
 
     const response = await fetch(
-      "http://127.0.0.1:8000/reset-password",
+      "https://bone-tumor-detection-1.onrender.com/reset-password",
       {
         method: "PUT",
         headers: {

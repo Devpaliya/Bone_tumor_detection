@@ -10,7 +10,7 @@ export default function PasswordRequestsPage({
   useEffect(() => {
 
     fetch(
-      "http://127.0.0.1:8000/admin/password-requests"
+      "https://bone-tumor-detection-1.onrender.com/admin/password-requests"
     )
       .then((res) => res.json())
       .then((data) => setRequests(data));
@@ -87,7 +87,7 @@ export default function PasswordRequestsPage({
                     onClick={async () => {
 
                       await fetch(
-                        `http://127.0.0.1:8000/approve-password-reset/${item._id}`,
+                        `https://bone-tumor-detection-1.onrender.com/approve-password-reset/${item._id}`,
                         {
                           method: "PUT"
                         }

@@ -6,7 +6,7 @@ export default function ManageDoctorsPage({ setPage }) {
 
   useEffect(() => {
 
-    fetch("http://127.0.0.1:8000/doctors")
+    fetch("https://bone-tumor-detection-1.onrender.com/doctors")
       .then((res) => res.json())
       .then((data) => setDoctors(data));
 
@@ -81,7 +81,7 @@ export default function ManageDoctorsPage({ setPage }) {
     <button
       onClick={async () => {
         await fetch(
-          `http://127.0.0.1:8000/approve-doctor/${doctor._id}`,
+          `https://bone-tumor-detection-1.onrender.com/approve-doctor/${doctor._id}`,
           {
             method: "PUT"
           }
@@ -99,7 +99,7 @@ export default function ManageDoctorsPage({ setPage }) {
     <button
       onClick={async () => {
         await fetch(
-          `http://127.0.0.1:8000/unblock-doctor/${doctor._id}`,
+          `https://bone-tumor-detection-1.onrender.com/unblock-doctor/${doctor._id}`,
           {
             method: "PUT"
           }
@@ -115,7 +115,7 @@ export default function ManageDoctorsPage({ setPage }) {
     <button
       onClick={async () => {
         await fetch(
-          `http://127.0.0.1:8000/block-doctor/${doctor._id}`,
+          `https://bone-tumor-detection-1.onrender.com/block-doctor/${doctor._id}`,
           {
             method: "PUT"
           }
@@ -135,7 +135,7 @@ export default function ManageDoctorsPage({ setPage }) {
       return;
 
     await fetch(
-      `http://127.0.0.1:8000/doctor/${doctor._id}`,
+      `https://bone-tumor-detection-1.onrender.com/doctor/${doctor._id}`,
       {
         method: "DELETE"
       }

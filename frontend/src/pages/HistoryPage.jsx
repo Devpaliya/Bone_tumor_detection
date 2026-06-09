@@ -12,7 +12,7 @@ export default function HistoryPage({
 
   useEffect(() => {
 
-    fetch("http://127.0.0.1:8000/history")
+    fetch("https://bone-tumor-detection-1.onrender.com/history")
       .then((res) => res.json())
       .then((data) => setHistory(data))
       .catch((err) => console.error(err));

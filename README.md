@@ -45,7 +45,7 @@ pip install -r requirements.txt
 ### 4. Run backend
 uvicorn app:app --reload
 
-Open: http://127.0.0.1:8000/docs
+Open: https://bone-tumor-detection-1.onrender.com/docs
 
 ### 5. Run frontend
 cd frontend

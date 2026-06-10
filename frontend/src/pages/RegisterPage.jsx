@@ -233,7 +233,7 @@ if (!passwordRegex.test(formData.password)) {
   
 </div>
 
-  <div className="relative">
+  <div className="relative mb-2">
 
     <input
       type={showConfirmPassword ? "text" : "password"}
@@ -253,7 +253,7 @@ if (!passwordRegex.test(formData.password)) {
       onClick={() =>
         setShowConfirmPassword(!showConfirmPassword)
       }
-      className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400"
+      className="absolute right-4 top-4 text-slate-400"
     >
       {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
     </button>
